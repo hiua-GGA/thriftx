@@ -2,21 +2,15 @@
   "name": "thriftx-websa",
   "version": "1.0.0",
   "description": "ThriftX Web Application",
-  "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:backend": "cd server && jest",
-    "test:frontend": "cd client && jest",
-    "test:e2e": "cypress run",
-    "test:e2e:open": "cypress open",
-    "test:performance": "node performance/lighthouse.js",
-    "test:performance:ci": "node performance/lighthouse.js --threshold 70"
+    "dev": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd client && npm run start",
+    "lint": "cd client && npm run lint",
+    "test": "cd client && npm run test"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@types/sharp": "^0.31.1",
