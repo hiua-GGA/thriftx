@@ -5,14 +5,11 @@ const nextConfig = {
   
   // Image optimization
   images: {
-    domains: [
-      'res.cloudinary.com',
-      'images.unsplash.com',
-      'thriftx-uploads.s3.amazonaws.com',
-    ],
+    domains: ['res.cloudinary.com'],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
   },
   
   // Compression
@@ -51,6 +48,10 @@ const nextConfig = {
         source: '/blog/:slug',
         destination: '/blog/post?slug=:slug',
       },
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
+      }
     ];
   },
   
@@ -58,21 +59,33 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff'
           },
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'DENY'
           },
-        ],
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block'
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin'
+          }
+        ]
       },
       {
         source: '/static/(.*)',
@@ -113,6 +126,14 @@ const nextConfig = {
         chunks: 'all',
         maxInitialRequests: 25,
         minSize: 20000,
+        cacheGroups: {
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+          },
+        },
       };
     }
     
@@ -134,6 +155,17 @@ const nextConfig = {
   
   // Powered by header (remove for production)
   poweredByHeader: false,
+  
+  // Enable static exports for better performance
+  output: 'standalone',
+  
+  // Enable source maps in production
+  productionBrowserSourceMaps: true,
+  
+  // Configure build output
+  distDir: '.next',
 };
+
+module.exports = nextConfig
 
  
