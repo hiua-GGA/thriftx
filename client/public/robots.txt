@@ -1,0 +1,23 @@
+# ThriftX robots.txt
+User-agent: *
+Allow: /
+
+# Disallow admin and private routes
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /auth/
+
+# Allow product and category pages
+Allow: /products/
+Allow: /categories/
+Allow: /shop/
+Allow: /blog/
+
+# Sitemaps
+Sitemap: https://thriftx.com/sitemap.xml
+Sitemap: https://thriftx.com/sitemap-products.xml
+Sitemap: https://thriftx.com/sitemap-categories.xml
+Sitemap: https://thriftx.com/sitemap-blog.xml 

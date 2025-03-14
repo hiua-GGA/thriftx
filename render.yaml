@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: thriftx-api
+    env: node
+    region: ohio
+    plan: standard
+    buildCommand: cd server && npm install && npm run build
+    startCommand: cd server && npm run start:prod
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SHIPPO_API_KEY
+        sync: false
+      - key: SENDGRID_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: "noreply@thriftx.com"
+      - key: FRONTEND_URL
+        value: "https://thriftx.com"
+      - key: REDIS_URL
+        sync: false
+    disk:
+      name: uploads
+      mountPath: /app/server/uploads
+      sizeGB: 10 

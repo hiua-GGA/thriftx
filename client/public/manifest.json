@@ -1,0 +1,114 @@
+{
+  "name": "ThriftX - Premium Thrift Shopping Experience",
+  "short_name": "ThriftX",
+  "description": "Discover unique, high-quality thrifted items at ThriftX. Shop sustainable fashion, home goods, and more at affordable prices.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/home-screen.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Home Screen of ThriftX"
+    },
+    {
+      "src": "/screenshots/product-page.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Product Page of ThriftX"
+    },
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Home Screen of ThriftX"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Shop Now",
+      "short_name": "Shop",
+      "description": "Browse our latest products",
+      "url": "/shop",
+      "icons": [{ "src": "/icons/shop-icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Account",
+      "short_name": "Account",
+      "description": "View your account details",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/account-icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.thriftx.app",
+      "id": "com.thriftx.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/thriftx/id123456789"
+    }
+  ],
+  "prefer_related_applications": false,
+  "categories": ["shopping", "lifestyle", "fashion"],
+  "lang": "en-US",
+  "dir": "ltr"
+} 
