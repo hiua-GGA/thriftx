@@ -1,10 +1,33 @@
 {
   "version": 2,
-  "buildCommand": "cd client && npm install && npm run build",
+  "buildCommand": "npm run build",
   "outputDirectory": "client/.next",
-  "installCommand": "cd client && npm install",
+  "installCommand": "npm install",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "server/src/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/src/index.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "client/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -26,17 +49,17 @@
           "value": "strict-origin-when-cross-origin"
         },
         {
-          "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://js.stripe.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.cloudinary.com; font-src 'self'; connect-src 'self' https://api.thriftx.com https://*.stripe.com; frame-src https://*.stripe.com;"
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()"
         }
       ]
     },
     {
-      "source": "/api/(.*)",
+      "source": "/static/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "no-store, max-age=0"
+          "value": "public, max-age=31536000, immutable"
         }
       ]
     },
@@ -50,19 +73,17 @@
       ]
     },
     {
-      "source": "/images/(.*)",
+      "source": "/api/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=86400"
+          "value": "no-store, max-age=0"
         }
       ]
     }
   ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://api.thriftx.com/api/:path*"
-    }
-  ]
+  "github": {
+    "enabled": true,
+    "silent": true
+  }
 } 
