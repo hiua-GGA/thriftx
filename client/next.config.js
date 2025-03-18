@@ -109,41 +109,28 @@ const nextConfig = {
   },
   
   // Webpack configuration for optimizations
-  webpack(config, { dev, isServer }) {
-    // SVG optimization
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
-    
-    // Only run in production and client-side
+  webpack: (config, { dev, isServer }) => {
+    // Optimize bundle size
     if (!dev && !isServer) {
-      // Enable tree shaking and purging
-      config.optimization.usedExports = true;
-      
-      // Split chunks for better caching
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 20000,
-        cacheGroups: {
-          commons: {
-            name: 'commons',
-            chunks: 'all',
-            minChunks: 2,
-            priority: 20,
-          },
+      config.optimization.splitChunks.cacheGroups = {
+        ...config.optimization.splitChunks.cacheGroups,
+        commons: {
+          name: 'commons',
+          chunks: 'all',
+          minChunks: 2,
+          priority: 20,
         },
-      };
+      }
     }
-    
-    return config;
+    return config
   },
   
   // Enable experimental features
   experimental: {
     scrollRestoration: true,
     optimizeCss: true,
+    serverActions: true,
+    serverComponents: true,
   },
   
   // Environment variables
