@@ -7,13 +7,18 @@ const nextConfig = {
   images: {
     domains: ['res.cloudinary.com'],
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
   },
   
-  // Compression
+  // Compression and optimization
   compress: true,
+  poweredByHeader: false,
+  productionBrowserSourceMaps: false,
+  
+  // Build output
+  output: 'standalone',
+  distDir: '.next',
   
   // Internationalization
   i18n: {
@@ -21,33 +26,9 @@ const nextConfig = {
     defaultLocale: 'en',
   },
   
-  // Redirects for SEO
-  async redirects() {
-    return [
-      {
-        source: '/products',
-        destination: '/shop',
-        permanent: true,
-      },
-      {
-        source: '/account/:path*',
-        destination: '/dashboard/:path*',
-        permanent: false,
-      },
-    ];
-  },
-  
-  // Rewrites for clean URLs
+  // Clean URLs and routing
   async rewrites() {
     return [
-      {
-        source: '/shop/:category',
-        destination: '/shop?category=:category',
-      },
-      {
-        source: '/blog/:slug',
-        destination: '/blog/post?slug=:slug',
-      },
       {
         source: '/api/:path*',
         destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`
@@ -55,7 +36,7 @@ const nextConfig = {
     ];
   },
   
-  // Headers for security and caching
+  // Security headers
   async headers() {
     return [
       {
@@ -84,75 +65,82 @@ const nextConfig = {
           {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin'
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()'
           }
         ]
       },
       {
-        source: '/static/(.*)',
+        source: '/_next/static/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
+            value: 'public, max-age=31536000, immutable'
+          }
+        ]
       },
       {
         source: '/api/(.*)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-store, max-age=0',
-          },
-        ],
-      },
+            value: 'no-store'
+          }
+        ]
+      }
     ];
   },
   
-  // Webpack configuration for optimizations
+  // Webpack optimization
   webpack: (config, { dev, isServer }) => {
-    // Optimize bundle size
     if (!dev && !isServer) {
-      config.optimization.splitChunks.cacheGroups = {
-        ...config.optimization.splitChunks.cacheGroups,
-        commons: {
-          name: 'commons',
-          chunks: 'all',
-          minChunks: 2,
-          priority: 20,
+      Object.assign(config.optimization.splitChunks, {
+        chunks: 'all',
+        minSize: 20000,
+        maxSize: 244000,
+        minChunks: 2,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          commons: {
+            name: 'commons',
+            chunks: 'all',
+            minChunks: 2,
+            priority: 20,
+          },
+          lib: {
+            test: /[\\/]node_modules[\\/]/,
+            name(module) {
+              const packageName = module.context.match(
+                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+              )[1];
+              return `npm.${packageName.replace('@', '')}`;
+            },
+            priority: 30,
+            minChunks: 1,
+            reuseExistingChunk: true,
+          },
         },
-      }
+      });
     }
-    return config
+    return config;
   },
   
-  // Enable experimental features
+  // Experimental features
   experimental: {
-    scrollRestoration: true,
-    optimizeCss: true,
     serverActions: true,
     serverComponents: true,
+    optimizeCss: true,
+    scrollRestoration: true,
+    typedRoutes: true,
+    webpackBuildWorker: true,
   },
-  
-  // Environment variables
-  env: {
-    SITE_NAME: 'ThriftX',
-    SITE_DESCRIPTION: 'Premium thrift shopping experience',
-    SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://thriftx.com',
-  },
-  
-  // Powered by header (remove for production)
-  poweredByHeader: false,
-  
-  // Enable static exports for better performance
-  output: 'standalone',
-  
-  // Enable source maps in production
-  productionBrowserSourceMaps: true,
-  
-  // Configure build output
-  distDir: '.next',
-};
+}
 
-module.exports = nextConfig
+module.exports = nextConfig;
 
  
